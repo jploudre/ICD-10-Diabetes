@@ -2,15 +2,20 @@
 CoordMode, Mouse, Window
 #Persistent
 #UseHook
+SetTitleMatchMode, 2
 SetKeyDelay, 30
 return
 
-#ifWinActive, Chart Reports - 
+; For Debugging Purposes
+#Space::
+WinGetTitle, Title, A
+ListVars
+Pause
+return
 
+#ifWinActive, Chart Reports - 
 #Space::
 NumPadAdd::
-Click, 573, 527 ; Search
-Sleep, 3000
 Click, 668, 150, 2 ; Open Top Result
 WinWaitActive, Chart -, , 10 ; Timeout 10 seconds
 if (ErrorLevel = 0) {
@@ -32,16 +37,13 @@ if (ErrorLevel = 0) {
                 WinWaitActive, Update Problems -
                 if (ErrorLevel = 0) {
                 SoundPlay, *64
-                WinGetPos, xpos, ypos, winwidth, winheight, Update Problems -
-                WinMove, %WinTitle%,, 100, 100, 800, 650
                 }
             }
         }
     }
 }
 return
- 
- 
+  
 #ifWinActive, Update Problems -  
 
 #Space::
@@ -93,6 +95,9 @@ if (ErrorLevel = 0) {
     if (ErrorLevel = 0) {
         Click, %FoundX%, %FoundY%
         WinWaitActive, Chart Reports -
+        Citrixsleep()
+        Click, 573, 527 ; Search
+        Sleep, 3000
         SoundPlay, *64
     }
     }
