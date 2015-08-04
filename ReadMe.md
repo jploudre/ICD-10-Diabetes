@@ -1,17 +1,19 @@
 ICD-10 Diabetes Script
 ===============
 
-This script speeds up manual conversion of ICD-10 codes. 
-The top dozen ICD-10 codes as single function keys, opens each chart easily.
+This script eases the opening and closing charts for conversion of ICD-10 codes. 
+The top dozen ICD-10 codes are single function keys.
 
 To Use
 ------
+
+Single time setup: Make little notes with color coded Post-its to put on your Function Keys. 
 
 * Open the Script, the green H called ICD-10-DM (puts a small 'H' icon on your lower right screen tray).
 * Go to **Chart Reports**, run the Diabetes report you want to work.
 * Press **Windows-Space** or **+ on Number pad** to open up an update.
 * Each time you press the hotkey again, it will take you to back to Chart Reports.(From 'Update Problems' or 'Update'.)
-* The Function Keys assume you have a Diabetic Code Selected and make the top 12 codes a single tap.
+* Use Function Keys assume you have a Diabetic Code Selected and make the top 12 codes a single tap.
 
 Function Keys
 --------------
@@ -33,6 +35,11 @@ FKey | Description|ICD-10|FCN Custom list
 11|E11.621 DM, TYPE 2, W/ FOOT ULCER|E11.621|FCN_DIABETES ULCER
 12|E11.622 DM, TYPE 2, W/ OTHER SKIN ULCER|E11.622|FCN_DIABETES ULCER
 
+Known Issues
+--------------
+
+1. First time it's used, Chart needs to 'warm up' and it may not work. We wouldn't want to slow down every single time to make that first time work. Just go back to 'Chart Reports' and start again.
+2. This currently can't sign updates due to permissions. Production will be able to.
 
 Trouble?
 --------------------
