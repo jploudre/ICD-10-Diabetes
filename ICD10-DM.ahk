@@ -1,87 +1,57 @@
-#InstallKeybdHook
 CoordMode, Mouse, Window
 #Persistent
-#UseHook
-SetTitleMatchMode, 2
 SetKeyDelay, 30
 return
 
-; For Debugging Purposes
+; The Main Hotkey, "Let's do this."-key
 #Space::
+NumPadAdd::
+IfWinActive, Chart Reports
+{
+    OpenChartUpdate()
+    Return
+}
+IfWinActive, Update Problems
+{
+    CloseUpdateProblems()
+    SendQuicktext()
+    EndUpdate()
+    return
+}
+IfWinActive, Update
+{
+    SendQuicktext()
+    EndUpdate()
+    return
+}
+; Debugging. If we got here, no match above. Remove Production
 WinGetTitle, Title, A
 ListVars
 Pause
 return
 
-#ifWinActive, Chart Reports - 
-#Space::
-NumPadAdd::
-Click, 668, 150, 2 ; Open Top Result
-WinWaitActive, Chart -, , 10 ; Timeout 10 seconds
-if (ErrorLevel = 0) {
-    CitrixSleep()
-    CitrixSleep()
-    WinGetPos,,,winwidth,winheight,A
-    ImageSearch, FoundX, FoundY, 0, 112, %winwidth%, %winheight%, *n50 NewDocument.png
-    if (ErrorLevel = 0) {
-        Click, %FoundX%, %FoundY%, 2
-        WinWaitActive, Update Chart -, , 10 ; Timeout 10 seconds 
-        if (ErrorLevel = 0) {
-            CitrixSleep()
-            Send zI{Enter}
-            WinWaitActive, Update - ; no timeout needed
-            if (ErrorLevel = 0) {
-                CitrixSleep()
-                Send +{F8}
-                CitrixSleep()
-                Click, 847, 401
-                WinWaitActive, Update Problems -
-                if (ErrorLevel = 0) {
-                SoundPlay, *64
-                }
-            }
-        }
-    }
-}
-return
-  
-#ifWinActive, Update Problems -  
-
-#Space::
-NumPadAdd::
-CloseUpdateProblems()
-SendQuicktext()
-EndUpdate()
-return
+F1::PatternHotKey(".->ChangeProblemtoICD10(E11.21")
+F2::PatternHotKey(".->ChangeProblemtoICD10(E11.22")
+F3::PatternHotKey(".->ChangeProblemtoICD10(E11.319")
+F4::PatternHotKey(".->ChangeProblemtoICD10(E11.359")
+F5::PatternHotKey(".->ChangeProblemtoICD10(E11.329")
+F6::PatternHotKey(".->ChangeProblemtoICD10(E11.36")
+F7::PatternHotKey(".->ChangeProblemtoICD10(E11.42")
+F8::PatternHotKey(".->ChangeProblemtoICD10(E11.43")
+F9::PatternHotKey(".->ChangeProblemtoICD10(E11.51")
+F10::PatternHotKey(".->ChangeProblemtoICD10(E11.59")
+F11::PatternHotKey(".->ChangeProblemtoICD10(E11.621")
+F12::PatternHotKey(".->ChangeProblemtoICD10(E11.622")
  
-F1::PatternHotKey(".->ChangeProblemtoICD10(E11.21 DM, TYPE 2, W/ NEPHROPATHY|*FCN_DIABETES RENAL")
-F2::PatternHotKey(".->ChangeProblemtoICD10(E11.22 DM, TYPE 2, W/ CKD|*FCN_DIABETES RENAL")
-F3::PatternHotKey(".->ChangeProblemtoICD10(E11.319 DM, TYPE 2, W/ RETINOPATHY, UNSPEC W/O MACULAR EDEMA|*FCN-DIABETES OPHTH")
-F4::PatternHotKey(".->ChangeProblemtoICD10(E11.359  DM, TYPE 2, W/ RETINOPATHY PROLIFERATIVE W/O MACULAR EDEMA|*FCN-DIABETES OPHTH")
-F5::PatternHotKey(".->ChangeProblemtoICD10(E11.329 DM, TYPE 2, W/ RETINOPATHY NONPROLIFERATIVE, W/O MACULAR EDEMA|*FCN-DIABETES OPHTH")
-F6::PatternHotKey(".->ChangeProblemtoICD10(E11.36 DM, TYPE 2, W/ CATARACT|*FCN-DIABETES OPHTH")
-F7::PatternHotKey(".->ChangeProblemtoICD10(E11.42 DM, TYPE 2, W/ POLYNEUROPATHY|*FCN_DIABETES NEURO")
-F8::PatternHotKey(".->ChangeProblemtoICD10(E11.43 DM, TYPE 2, W/ PERIPHERAL AUTONOMIC NEUROPATHY|*FCN_DIABETES NEURO")
-F9::PatternHotKey(".->ChangeProblemtoICD10(E11.51 DM, TYPE 2, W/ PERIPHERAL ANGIOPATHY OR PAD|*FCN_DIABETES PERIPHERAL CIRC")
-F10::PatternHotKey(".->ChangeProblemtoICD10(E11.59 DM, TYPE 2, W/ OTHER CIRCULATORY COMPL|*FCN_DIABETES PERIPHERAL CIRC")
-F11::PatternHotKey(".->ChangeProblemtoICD10(E11.621 DM, TYPE 2, W/ FOOT ULCER|*FCN_DIABETES ULCER")
-F12::PatternHotKey(".->ChangeProblemtoICD10(E11.622 DM, TYPE 2, W/ OTHER SKIN ULCER|E11.622|*FCN_DIABETES ULCER")
- 
-#ifWinActive, Update  -  
-#Space::
-NumPadAdd::
-SendQuicktext()
-EndUpdate()
-return
-#ifWinActive ; End of Window Specific Hotkeys.
 ;############################################
 
 CitrixSleep(){
+; Generic Sleep length added to allow for Citrix Variability.
 Sleep, 500
 }
-return
 
 CloseUpdateProblems(){
+; Assumes in Update Problems
 WinGetPos,,,winwidth,winheight,A
 xpos := winwidth - 120
 ypos := winheight -26
@@ -89,18 +59,18 @@ click, %xpos%, %ypos%, 2
 WinWaitNotActive, Update Problems -
 CitrixSleep()
 }
-return
 
 SendQuicktext(){
- Send +{F8}
+; Assumes in Update with Templates Active
+Send +{F8}
 Citrixsleep()
 Click, 300, 500
 Send `;icddm{Enter 2}.icd10prob{Enter 2}
 CitrixSleep()
 }
-return
 
 EndUpdate(){
+; Assumes in Update
 Send ^e
 WinWaitActive, End Update - 
 CitrixSleep()
@@ -120,27 +90,68 @@ if (ErrorLevel = 0) {
     }
     }
 }
-return
 
-
-ChangeProblemtoICD10(DescriptionandList){
-StringSplit, SearchTerms, DescriptionandList, "|"
-Send !c
-WinWaitActive,  Edit Problem, ,4
+OpenChartUpdate(){
+; Assumes Chart Reports
+Click, 668, 150, 2 ; Open Top Result
+WinWaitActive, Chart -, , 10 ; Timeout 10 seconds
+if (ErrorLevel = 0) {
+    CitrixSleep()
+    CitrixSleep()
+    ImageSearch, FoundX, FoundY, 0, 112, 220, 400, *n50 NewDocument.png
     if (ErrorLevel = 0) {
-        CitrixSleep()
-        Click, 566, 132, 2
-        CitrixSleep()
-        Click, 570, 281, 5
+        Click, %FoundX%, %FoundY%, 2
+        WinWaitActive, Update Chart -, , 10 ; Timeout 10 seconds 
+        if (ErrorLevel = 0) {
+            CitrixSleep()
+            Send zI{Enter}
+            WinWaitActive, Update - ; no timeout needed
+            if (ErrorLevel = 0) {
+                CitrixSleep()
+                ; Assumes Opens in Text Mode
+                Send +{F8}
+                CitrixSleep()
+                Click, 847, 401
+                WinWaitActive, Update Problems -
+                if (ErrorLevel = 0) {
+                SoundPlay, *64
+                }
+            }
+        }
     }
 }
-return
 
+}
+
+ChangeProblemtoICD10(ICD10Code){
+; Assumes Update Problems.
+IfWinActive, Update Problems
+{
+    Send !c
+    WinWaitActive, Edit Problem, , 4 ; If window doesn't open, no diagnosis was selected.
+    if (ErrorLevel = 0) {
+        
+        return
+        }
+    else {
+        return
+    }
+}    
+}
+
+/*
+Autohotkey Ternary Split Line Notation
+sub := (command1 = "#a") ? "add"
+	     : (command1 = "#b") ? "build"
+	     : (command1 = "#?") ? "debuggen"
+	     : "falsch"
+*/
 
 ; Downloaded Functions
 ;############################################
 
-Clip(Text="", Reselect="") ; http://www.autohotkey.com/forum/viewtopic.php?p=467710 , modified August 2012
+; http://www.autohotkey.com/forum/viewtopic.php?p=467710 , modified August 2012
+Clip(Text="", Reselect="") 
 {
 	Static BackUpClip, Stored, LastClip
 	If (A_ThisLabel = A_ThisFunc) {
@@ -177,18 +188,6 @@ Clip(Text="", Reselect="") ; http://www.autohotkey.com/forum/viewtopic.php?p=467
 }
 
 ; http://www.autohotkey.com/board/topic/66855-patternhotkey-map-shortlong-keypress-patterns-to-anything/?hl=%2Bpatternhotkey
-; Usage : hotkey::PatternHotKey("command1", ["command2", "command3", length(integer), period(float)])
-;     where commands match one of the following formats:
-;         "pattern:keys"                  ; Maps pattern to send keys
-;         "pattern->label"                ; Maps pattern to label (GoSub)
-;         "pattern->function()"           ; Maps pattern to function myfunction with
-;                                           no parameter
-;         "pattern->function(value)"      ; Maps pattern to function myfunction with
-;                                           the first parameter equal to 'value'
-;         and patterns match the following formats:
-;             '.' or '0' represents a short press
-;             '-' or '_' represents a long press of any length
-;             '?' represents any press
 PatternHotKey(arguments*)
 {
     period = 0.2
