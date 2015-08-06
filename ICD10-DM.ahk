@@ -93,7 +93,7 @@ if (ErrorLevel = 0) {
 
 OpenChartUpdate(){
 ; Assumes Chart Reports
-Click, 667, 234, 2 ; Open Top Result
+Click, 667, 236, 2 ; Open Top Result
 WinWaitActive, Chart -, , 10 ; Timeout 10 seconds
 if (ErrorLevel = 0) {
     CitrixSleep()
