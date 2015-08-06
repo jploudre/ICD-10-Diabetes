@@ -93,7 +93,7 @@ if (ErrorLevel = 0) {
 
 OpenChartUpdate(){
 ; Assumes Chart Reports
-Click, 668, 150, 2 ; Open Top Result
+Click, 667, 234, 2 ; Open Top Result
 WinWaitActive, Chart -, , 10 ; Timeout 10 seconds
 if (ErrorLevel = 0) {
     CitrixSleep()
@@ -114,7 +114,19 @@ if (ErrorLevel = 0) {
                 Click, 847, 401
                 WinWaitActive, Update Problems -
                 if (ErrorLevel = 0) {
-                SoundPlay, *64
+                    ; Updating Window Size is Buggy in CPS 12
+                    /*
+                    WinGetPos, , ypos,,winheight ; Resize the Update Problems window
+                    ydelta := ypos
+                    MouseclickDrag, Left, 380, 29, 380, (22 - ydelta), 30
+                    Sleep, 100
+                    WinGetPos, , ,,winheight
+                    MouseClickDrag, Left, 380, (winheight - 4) , 380 , (winheight - 4 + ydelta), 30
+                    WinGetPos, , ,,winheight
+					MouseMove, 880, winheight, 5 
+                    Click     
+                    */
+                    SoundPlay, *64
                 }
             }
         }
