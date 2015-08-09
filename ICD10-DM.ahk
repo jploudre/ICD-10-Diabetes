@@ -84,7 +84,7 @@ if (ErrorLevel = 0) {
         Click, %FoundX%, %FoundY%
         WinWaitActive, Chart Reports -
         Citrixsleep()
-        Click, 573, 527 ; Search
+        Click, 573, 630 ; Search
         Sleep, 3000
         SoundPlay, *64
     }
@@ -93,11 +93,15 @@ if (ErrorLevel = 0) {
 
 OpenChartUpdate(){
 ; Assumes Chart Reports
-Click, 667, 236, 2 ; Open Top Result
+Click, 667, 240, 2 ; Open Top Result
 WinWaitActive, Chart -, , 10 ; Timeout 10 seconds
 if (ErrorLevel = 0) {
-    CitrixSleep()
-    CitrixSleep()
+    WinWaitActive, Care Alert Warning, , 2 ; Add 2 seconds to wait for a Popup
+    if (ErrorLevel = 0) {
+        Send !{F4}
+        CitrixSleep()
+    }
+
     ImageSearch, FoundX, FoundY, 0, 112, 220, 400, *n50 NewDocument.png
     if (ErrorLevel = 0) {
         Click, %FoundX%, %FoundY%, 2
