@@ -94,7 +94,7 @@ if (ErrorLevel = 0) {
 OpenChartUpdate(){
 ; Assumes Chart Reports
 Click, 667, 240, 2 ; Open Top Result
-WinWaitActive, Chart -, , 20 ; Timeout 10 seconds
+WinWaitActive, Chart -, , 20 ; Timeout 20 seconds
 if (ErrorLevel = 0) {
     WinWaitActive, Care Alert Warning, , 2 ; Add 2 seconds to wait for a Popup
     if (ErrorLevel = 0) {
@@ -137,7 +137,6 @@ if (ErrorLevel = 0) {
     }
 }
 }
-
 
 ChangeProblemtoICD10(ICD10Code){
 ; Assumes Update Problems.
@@ -206,53 +205,8 @@ selectproblem(downclicks, ycoordinate, searchterm){
     Send {Down}{Enter}
 }
 
-/*
-Autohotkey Ternary Split Line Notation
-sub := (command1 = "#a") ? "add"
-	     : (command1 = "#b") ? "build"
-	     : (command1 = "#?") ? "debuggen"
-	     : "falsch"
-*/
-
 ; Downloaded Functions
 ;############################################
-
-; http://www.autohotkey.com/forum/viewtopic.php?p=467710 , modified August 2012
-Clip(Text="", Reselect="") 
-{
-	Static BackUpClip, Stored, LastClip
-	If (A_ThisLabel = A_ThisFunc) {
-		If (Clipboard == LastClip)
-			Clipboard := BackUpClip
-		BackUpClip := LastClip := Stored := ""
-	} Else {
-		If !Stored {
-			Stored := True
-			BackUpClip := ClipboardAll
-		} Else
-			SetTimer, %A_ThisFunc%, Off
-		LongCopy := A_TickCount, Clipboard := "", LongCopy -= A_TickCount
-		If (Text = "") {
-			Send, ^c
-			ClipWait, LongCopy ? 0.5 : 0.25
-		} Else {
-			Clipboard := LastClip := Text
-			ClipWait, 10
-			Send, ^v
-		}
-		SetTimer, %A_ThisFunc%, -700
-		If (Text = "")
-			Return LastClip := Clipboard
-		Else If (ReSelect = True) or (Reselect and (StrLen(Text) < 3000)) {
-			Sleep 30
-			StringReplace, Text, Text, `r, , All
-			SendInput, % "{Shift Down}{Left " StrLen(Text) "}{Shift Up}"
-		}
-	}
-	Return
-	Clip:
-	Return Clip()
-}
 
 ; http://www.autohotkey.com/board/topic/66855-patternhotkey-map-shortlong-keypress-patterns-to-anything/?hl=%2Bpatternhotkey
 PatternHotKey(arguments*)
