@@ -94,7 +94,7 @@ if (ErrorLevel = 0) {
 OpenChartUpdate(){
 ; Assumes Chart Reports
 Click, 667, 240, 2 ; Open Top Result
-WinWaitActive, Chart -, , 10 ; Timeout 10 seconds
+WinWaitActive, Chart -, , 20 ; Timeout 10 seconds
 if (ErrorLevel = 0) {
     WinWaitActive, Care Alert Warning, , 2 ; Add 2 seconds to wait for a Popup
     if (ErrorLevel = 0) {
@@ -136,23 +136,74 @@ if (ErrorLevel = 0) {
         }
     }
 }
-
 }
+
 
 ChangeProblemtoICD10(ICD10Code){
 ; Assumes Update Problems.
 IfWinActive, Update Problems
 {
     Send !c
-    WinWaitActive, Edit Problem, , 4 ; If window doesn't open, no diagnosis was selected.
+    WinWaitActive, Edit Problem, ,10 ; If window doesn't open, no diagnosis was selected.
     if (ErrorLevel = 0) {
+        Click, 566, 135
+        Citrixsleep()
+        Citrixsleep()
+        ; Hardcoded 
+        if (ICD10Code = "E11.21")
+        selectproblem(5, 191, "DM, TYPE 2, W/ NEPHROPATHY")
+        if (ICD10Code = "E11.22")
+        selectproblem(5, 191, "DM, TYPE 2, W/ CKD")
+        if (ICD10Code = "E11.319")
+        selectproblem(4, 272, "DM, TYPE 2, W/ RETINOPATHY, UNSPEC W/O MACULAR EDEMA")        
+        if (ICD10Code = "E11.359")
+        selectproblem(4, 272, "DM, TYPE 2, W/ RETINOPATHY PROLIFERATIVE W/O MACULAR EDEMA")        
+        if (ICD10Code = "E11.329")
+        selectproblem(4, 272, "DM, TYPE 2, W/ RETINOPATHY NONPROLIFERATIVE, W/O MACULAR EDEMA")        
+        if (ICD10Code = "E11.36")
+        selectproblem(4, 272, "DM, TYPE 2, W/ CATARACT")  
+        if (ICD10Code = "E11.42")
+        selectproblem(4, 255, "DM, TYPE 2, W/ POLYNEUROPATHY")  
+        if (ICD10Code = "E11.43")
+        selectproblem(4, 255, "DM, TYPE 2, W/ PERIPHERAL AUTONOMIC NEUROPATHY")  
+        if (ICD10Code = "E11.51")
+        selectproblem(5, 175, "DM, TYPE 2, W/ PERIPHERAL ANGIOPATHY OR PAD")
+        if (ICD10Code = "E11.59")
+        selectproblem(5, 175, "DM, TYPE 2, W/ OTHER CIRCULATORY COMPL")
+        if (ICD10Code = "E11.621")
+        selectproblem(5, 206, "DM, TYPE 2, W/ FOOT ULCER")
+        if (ICD10Code = "E11.622")
+        selectproblem(5, 206, "DM, TYPE 2, W/ OTHER SKIN ULCER")        
         
+        ImageSearch, FoundX, FoundY, 34, 351, 244, 405, *n50 no-onset-date.png
+        if (ErrorLevel = 0) {
+        SoundPlay, *16
+        }
+        if (ErrorLevel = 1) {
+        Click, 437, 568
+        }
         return
         }
     else {
         return
     }
 }    
+}
+
+selectproblem(downclicks, ycoordinate, searchterm){
+    Loop, %downclicks%
+    {
+        Citrixsleep()
+        Click, 568, 290 
+    }
+    Citrixsleep()
+    Click, 255, %ycoordinate%
+    Citrixsleep()
+    Click, 404, 101
+    CitrixSleep()
+    Send %searchterm%
+    Citrixsleep()
+    Send {Down}{Enter}
 }
 
 /*
