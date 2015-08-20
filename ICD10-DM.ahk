@@ -74,7 +74,7 @@ EndUpdate(){
 Send ^e
 WinWaitActive, End Update - 
 CitrixSleep()
-Send !o
+Send !s
 WinWaitActive, Chart -, , 10
 if (ErrorLevel = 0) {
     CitrixSleep()
@@ -143,12 +143,13 @@ ChangeProblemtoICD10(ICD10Code){
 IfWinActive, Update Problems
 {
     Send !c
-    WinWaitActive, Edit Problem, ,10 ; If window doesn't open, no diagnosis was selected.
+    WinWaitActive, Edit Problem, ,3 ; If window doesn't open, no diagnosis was selected.
     if (ErrorLevel = 0) {
         Click, 566, 135
         Citrixsleep()
         Citrixsleep()
         Citrixsleep()
+	Citrixsleep()
         ; Hardcoded 
         if (ICD10Code = "E11.21")
         selectproblem(267, "DM, TYPE 2, W/ NEPHROPATHY")
