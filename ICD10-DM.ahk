@@ -172,9 +172,9 @@ IfWinActive, Update Problems
         if (ICD10Code = "E11.59")
         selectproblem(252, "DM, TYPE 2, W/ OTHER CIRCULATORY COMPL")
         if (ICD10Code = "E11.621")
-        selectproblem(280, "DM, TYPE 2, W/ FOOT ULCER")
+        selectproblem(288, "DM, TYPE 2, W/ FOOT ULCER")
         if (ICD10Code = "E11.622")
-        selectproblem(280, "DM, TYPE 2, W/ OTHER SKIN ULCER")        
+        selectproblem(288, "DM, TYPE 2, W/ OTHER SKIN ULCER")        
         
         ImageSearch, FoundX, FoundY, 34, 351, 244, 405, *n50 no-onset-date.png
         if (ErrorLevel = 0) {
