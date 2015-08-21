@@ -95,13 +95,14 @@ OpenChartUpdate(){
 ; Assumes Chart Reports
 Click, 667, 240, 2 ; Open Top Result
 WinWaitActive, Chart -, , 20 ; Timeout 20 seconds
+
 if (ErrorLevel = 0) {
     WinWaitActive, Care Alert Warning, , 2 ; Add 2 seconds to wait for a Popup
     if (ErrorLevel = 0) {
         Send !{F4}
         CitrixSleep()
     }
-
+	CitrixSleep()
     ImageSearch, FoundX, FoundY, 0, 112, 220, 400, *n50 NewDocument.png
     if (ErrorLevel = 0) {
         Click, %FoundX%, %FoundY%, 2
