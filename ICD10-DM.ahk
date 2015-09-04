@@ -65,10 +65,9 @@ SendQuicktext(){
 Send +{F8}
 Citrixsleep()
 Click, 300, 500
-Citrixsleep()
+Sleep, 1000
 Send `;icddm{Enter 2}
-Citrixsleep()
-Citrixsleep()
+Sleep, 3000
 Send .icd10prob{Enter 2}
 CitrixSleep()
 Citrixsleep()
