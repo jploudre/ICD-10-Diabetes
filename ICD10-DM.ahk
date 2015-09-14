@@ -186,7 +186,7 @@ IfWinActive, Update Problems
         SoundPlay, *16
         }
         if (ErrorLevel = 1) {
-        Click, 437, 525
+        Click, 437, 568
         }
         return
         }
@@ -202,12 +202,8 @@ selectproblem(ycoordinate, searchterm){
     Click, 404, 101
     CitrixSleep()
     Send %searchterm%
-    Sleep, 2000
-    Send {Down}
     Citrixsleep()
-    Send {Down}
-    Citrixsleep()
-    Send {Enter}
+    Send {Down}{Enter}
 }
 
 ; Downloaded Functions
